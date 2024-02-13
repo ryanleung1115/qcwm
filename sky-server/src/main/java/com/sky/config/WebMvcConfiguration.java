@@ -37,26 +37,15 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
      */
     protected void addInterceptors(InterceptorRegistry registry) {
         log.info("开始注册自定义拦截器...");
-        registry.addInterceptor(jwtTokenAdminInterceptor)
-                .addPathPatterns("/admin/**")
-                .excludePathPatterns("/admin/employee/login");
+        registry.addInterceptor(jwtTokenAdminInterceptor).addPathPatterns("/admin/**").excludePathPatterns("/admin/employee/login");
     }
 
     @Bean
     public Docket docket() {
         log.info("ready to generate api documentation...");
-        ApiInfo apiInfo = new ApiInfoBuilder()
-                .title("苍穹外卖项目接口文档")
-                .version("2.0")
-                .description("苍穹外卖项目接口文档")
-                .build();
+        ApiInfo apiInfo = new ApiInfoBuilder().title("苍穹外卖项目接口文档").version("2.0").description("苍穹外卖项目接口文档").build();
 
-        Docket docket = new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(apiInfo)
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("com.sky.controller"))
-                .paths(PathSelectors.any())
-                .build();
+        Docket docket = new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo).select().apis(RequestHandlerSelectors.basePackage("com.sky.controller")).paths(PathSelectors.any()).build();
 
         return docket;
     }
@@ -71,6 +60,6 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
     protected void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
         MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
         messageConverter.setObjectMapper(new JacksonObjectMapper());
-        converters.add(0,messageConverter);
+        converters.add(0, messageConverter);
     }
 }
