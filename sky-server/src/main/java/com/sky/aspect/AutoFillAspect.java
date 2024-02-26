@@ -20,7 +20,8 @@ import java.time.LocalDateTime;
 public class AutoFillAspect {
     @Pointcut("execution(* com.sky.mapper.*.*(..)) && " +
             "@annotation(com.sky.annotation.AutoFill)")
-    public void pc(){}
+    public void pc() {
+    }
 
     @Before("pc()")
     public void autoFill(JoinPoint joinPoint) throws Exception {
@@ -31,7 +32,7 @@ public class AutoFillAspect {
         OperationType operationType = annotation.value();
 
         Object[] args = joinPoint.getArgs();
-        if (args==null || args.length==0){
+        if (args == null || args.length == 0) {
             return;
         }
 
@@ -40,22 +41,22 @@ public class AutoFillAspect {
         LocalDateTime now = LocalDateTime.now();
         Long currentId = BaseContext.getCurrentId();
 
-        if (operationType== OperationType.INSERT) {
+        if (operationType == OperationType.INSERT) {
             Method setCreateTime = entity.getClass().getDeclaredMethod("setCreateTime", LocalDateTime.class);
             Method setUpdateTime = entity.getClass().getDeclaredMethod("setUpdateTime", LocalDateTime.class);
             Method setCreateUser = entity.getClass().getDeclaredMethod("setCreateUser", Long.class);
             Method setUpdateUser = entity.getClass().getDeclaredMethod("setUpdateUser", Long.class);
 
-            setCreateTime.invoke(entity,now);
-            setUpdateTime.invoke(entity,now);
-            setCreateUser.invoke(entity,currentId);
-            setUpdateUser.invoke(entity,currentId);
-        }else if (operationType== OperationType.UPDATE){
+            setCreateTime.invoke(entity, now);
+            setUpdateTime.invoke(entity, now);
+            setCreateUser.invoke(entity, currentId);
+            setUpdateUser.invoke(entity, currentId);
+        } else if (operationType == OperationType.UPDATE) {
             Method setUpdateTime = entity.getClass().getDeclaredMethod("setUpdateTime", LocalDateTime.class);
             Method setUpdateUser = entity.getClass().getDeclaredMethod("setUpdateUser", Long.class);
 
-            setUpdateTime.invoke(entity,now);
-            setUpdateUser.invoke(entity,currentId);
+            setUpdateTime.invoke(entity, now);
+            setUpdateUser.invoke(entity, currentId);
         }
     }
 }
